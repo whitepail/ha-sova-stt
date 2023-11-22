@@ -1,0 +1,10 @@
+{
+  "domain": "sova_stt",
+  "name": "Sova.AI local server Speech-To-Text",
+  "codeowners": ["@white_pail"],
+  "documentation": "https://github.com/whitepail/ha-sova-stt",
+  "iot_class": "cloud_push",
+  "version": "0.1.0",
+  "requirements": [],
+  "loggers": ["custom_components.sova_stt"]
+}

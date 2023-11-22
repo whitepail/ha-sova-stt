@@ -1,43 +1,33 @@
-# Google Cloud Speech-To-Text for Home Assistant
+# SOVA.ai Speech-To-Text for Home Assistant
 
-[![](https://img.shields.io/github/release/chatziko/ha-google-cloud-stt/all.svg?style=for-the-badge)](https://github.com/chatziko/ha-google-cloud-stt/releases)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
-[![](https://img.shields.io/badge/MAINTAINER-%40chatziko-red?style=for-the-badge)](https://github.com/chatziko)
-[![](https://img.shields.io/badge/COMMUNITY-FORUM-success?style=for-the-badge)](https://community.home-assistant.io)
-
-
-This integration allows to use [Google Cloud Speech-to-Text](https://cloud.google.com/speech-to-text) in Home Assistant.
+This integration allows to use [SOVA.ai Cloud Speech-to-Text](https://sova.ai/ru/asr-tts/) in Home Assistant.
 
 ## Install
 
 You can install this integration via [HACS](https://hacs.xyz/). Go to HACS / Integrations / Three-dots menu / Custom repositories
 and add:
-- Repository: `https://github.com/chatziko/ha-google-cloud-stt`
+- Repository: `https://github.com/whitepail/ha-sova-stt`
 - Category: Integration
 
-Then install the "Google Cloud Speech-To-Text" integration.
+Then install the "SOVA.ai Speech-To-Text" integration.
 
 
 ## Configure
 
-To use it you need to configure a Google Cloud project, following the same instructions as the
-[Google Cloud Text-to-Speach](https://www.home-assistant.io/integrations/google_cloud) integration.
-Then place the JSON file with the API key you downloaded in the `config` folder, and add the following to your `configuration.yaml`:
+To use it you need to configure a local instance of sova.ai ASR, following the instructions in the
+[SOVA.ai github repository](https://github.com/sovaai/sova-asr).
+Then add the following to your `configuration.yaml`:
 
 ```yaml
 stt:
-  - platform: google_cloud_stt
-    key_file: googlecloud.json
-    model: command_and_search
+  - platform: sova_stt
+    server: your_sova_host:8888
 ```
 
 After enabling the integration, you can configure a [Voice Assistant](https://www.home-assistant.io/blog/2023/04/27/year-of-the-voice-chapter-2/#composing-voice-assistants)
-to use it by selecting `google_cloud_stt` in the "Speech-to-text" option.
+to use it by selecting `sova_stt` in the "Speech-to-text" option.
 
-The supported languages are listed [here](https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages).
-Note that V1 of Google Cloud Speech-to-Text is used (it is available in more languages and has a free tier).
-The list of available models is avaiable [here](https://cloud.google.com/speech-to-text/docs/speech-to-text-requests#select-model). The default model
-is `command_and_search`, since it is available in most languages and should perform well in home automation tasks.
+The only supported language now is Russian.
 
 
 ## FAQ
@@ -45,16 +35,14 @@ is `command_and_search`, since it is available in most languages and should perf
 #### I get the following error in the Home Assistant system log
 
   ```
-  The stt integration does not support any configuration parameters, got [{'platform': 'google_cloud_stt', 'key_file': 'google-cloud-service-googlecloud.json', 'model': 'command_and_search'}]. Please remove the configuration parameters from your configuration.
+  The stt integration does not support any configuration parameters, got [{'platform': 'sova_stt', 'server': '....']. Please remove the configuration parameters from your configuration.
   ```
 
 This is a known issue due to a [bug](https://github.com/home-assistant/core/issues/97161) in Home Assistant >= 2023.7. However, the reported message
 does __not__ affect the functionality of this integration, it should still work as expected (if properly configured).
 
-#### How much does it cost to use Google Cloud Speech-To-Text?
+#### How much does it cost to use SOVA.ai Speech-To-Text?
 
-At the time of writing the pricing of Google Cloud Speech-to-Text V1 is:
-- Free for the first 60 minutes / month.
-- $0.024 / minute after the first 60 minutes/month.
-
-Check Google's [pricing table](https://cloud.google.com/speech-to-text/pricing#pricing_table) for up-to-date information.
+SOVA.ai is completely free as long as you run it on your own hardware.
+I use jetson TX2 to run several models, including SOVA, Piper, compreface, frigate etc...
+Sova is available for x86_64 platform (https://github.com/sovaai/sova-asr) and ARM64 (https://github.com/whitepail/sova-asr-jetson)
